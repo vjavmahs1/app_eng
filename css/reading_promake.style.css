@@ -1,0 +1,62 @@
+#mainbody{
+  margin: 15px 30px;
+  width :900px;
+  height: 750px;
+  border: 2px groove grey;
+
+}
+
+#upper{
+  border-bottom: 1px groove grey;
+  height: 50px;
+}
+
+#middle_left{
+  position: absolute;
+  border-right: 1px groove grey;
+  width: 450px;
+  height: 685px;
+}
+
+#protext{
+  margin-left: 15px;
+  width: 415px;
+  height: 380px;
+  font-size: 12px;
+}
+
+
+#middle_right{
+  position: absolute;
+  left : 490px;
+  border-right: 1px groove grey;
+  width: 450px;
+  height: 685px;
+}
+
+#produce{
+  position: relative;
+  float: right;
+  bottom: 34px;
+
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+#dbutton{
+  position: relative;
+  float: right;
+  bottom: 34px;
+  background-color: #f44336;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  text-align: center;
+  font-size: 13px;
+
+}

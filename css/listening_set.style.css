@@ -1,0 +1,16 @@
+#makeset{
+  margin-bottom: 15px;
+}
+
+#produce-alert{
+  display: none;
+}
+
+
+#edit-alert{
+  display: none;
+}
+
+#delete-alert{
+  display: none;
+}

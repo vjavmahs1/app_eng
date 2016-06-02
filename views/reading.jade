@@ -1,0 +1,137 @@
+doctype html
+html
+  head
+    meta=(charset="utf-8")
+    link(rel='stylesheet' type ='text/css' href='/css/problems_style.css')
+    link(rel='stylesheet' type ='text/css' href='/css/reading_style.css')
+    link(rel='stylesheet' type ='text/css' href='/css/header.style.css')
+    link(rel='stylesheet' type ='text/css' href='/css/side_topic.style.css')
+
+    script(src="//code.jquery.com/jquery-1.12.3.min.js")
+    link(rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js")
+    script(src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
+    
+  body
+    include ./header.jade
+
+
+      
+    div(id='container')
+      a(href="/reading/new")
+        button(id="makepro") 문제생성
+      nav
+        ul
+          each questiontype in r_questiontypes
+            li
+              a(href='/reading/'+questiontype.r_questiontype_id)= questiontype.r_questiontype_type
+          li
+            a(href="#") 문제유형생성
+    article(id = "article")
+      each question in r_questions
+        div(id ='outter')
+          div(id='question_type')= question.r_questiontype_type
+          div(id='topic')= question.r_question_topic
+          div(id='context')= question.r_question_text
+          li= question.r_question_asw1
+          li= question.r_question_asw2
+          li= question.r_question_asw3
+          li= question.r_question_asw4
+          li= question.r_question_asw5
+
+          button(id='dbutton' type="button" data-toggle="modal" data-target="#myModal" data-id= "#{JSON.stringify(question.r_question_id)}") 삭제
+          a(href='/reading/'+question.r_question_id+'/edit')
+            button(id='mbutton') 수정
+          div(id="myModal" class="modal fade" role="dialog")
+            div(class="modal-dialog")
+              div(class="modal-content")
+                div(class="modal-header")
+                  button(type="button" class="close" data-dismiss="modal") &times;
+                  h4(class="modal-title") 문제 삭제      
+                div(class="modal-body")
+                  p 문제를 삭제하시겠습니까?    
+                div(class="modal-footer")
+                  button(type="button"  data-dismiss="modal") 취소
+                  button(type="button"  class = "dele" data-dismiss="modal" ) 삭제
+    script.
+      var datBastStart = 3; 
+      $(window).scroll(function (){
+         if($(document).height() <= $(window).scrollTop() + $(window).height()){
+           var url = $(location).attr('pathname');
+           var id = url.substring(url.lastIndexOf('/') + 1);
+           if(id != 'reading'){
+             load(id)
+           }else{
+         loadmore();
+             }
+            }
+       });
+         function loadmore(){
+           $.ajax({
+           type: 'post',
+           url: 'reading/promake',
+          data: '&datBastStart='+datBastStart,
+           success: function (response) {
+             $('#article').append(response);
+           }
+
+           });
+           datBastStart = datBastStart + 3;
+         }
+         
+         function load(id){
+           $.ajax({
+           type: 'post',
+           url: 'promake/'+id,
+          data: '&datBastStart='+datBastStart,
+           success: function (response) {
+             $('#article').append(response);
+           }
+
+           });
+           datBastStart = datBastStart + 3;
+         }
+         
+         
+      $(document).on("click", "#dbutton", function () {
+        var proId = $(this).data('id');
+        alert(proId);
+          var one = document.getElementsByClassName('dele')
+          one[0].addEventListener('click', function(){
+            var url = $(location).attr('pathname');
+            var id = url.substring(url.lastIndexOf('/') + 1);
+            if(id != 'reading'){
+              removeCertainItem(proId)
+            }else{
+              removeItem(proId);
+
+              }
+            
+            
+          })        
+      });
+      
+        function removeItem(id) {
+          $.ajax({
+          url:'reading/'+id+'/delete',  
+          type:"post",
+          data: id,
+          success:function(content) {
+            location.reload();
+            
+            
+            }
+          });
+        }
+        function removeCertainItem(id) {
+          $.ajax({
+          url: id+'/delete',  
+          type:"post",
+          data: id,
+          success:function(content) {
+            location.reload();
+            
+            
+            }
+          });
+        }                     

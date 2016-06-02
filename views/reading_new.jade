@@ -1,0 +1,124 @@
+doctype html
+html
+  head
+    meta=(charset="utf-8")
+    link(rel='stylesheet' type ='text/css' href='/css/promake.style.css')
+    link(rel='stylesheet' type ='text/css' href='/css/reading_promake.style.css')
+    link(rel='stylesheet' type ='text/css' href='/css/header.style.css')
+    script(src="//code.jquery.com/jquery-1.12.3.min.js")   
+    script(src="//code.jquery.com/ui/1.11.4/jquery-ui.js")
+  body
+    include ./header.jade
+
+    div(id = "mainbody")
+      form(action='/reading/new' method="POST" id = "target")
+
+        div(id = "upper")
+          select(name="r_questiontype_id" id="droplist")
+            option(selected="selected" disabled="disabled") 문제유형을 선택하세요
+            
+            
+            each r_questiontype in r_questiontypes
+              option(value =r_questiontype.r_questiontype_id id="opt")=r_questiontype.r_questiontype_type
+          div(id ="protype") 문제유형 :
+
+          input(type="submit" value="생성" id="produce")
+          button(id="dbutton" onclick="history.back()") 취소
+
+        div(id="middle_left")
+          input(type = "text" name = "r_question_topic" id="problem" placeholder="문제 :")
+          textarea(name = "r_question_text" id="protext" placeholder="본문 :")
+          ul(id="sortable")
+            li
+                input(type = "text" name = "r_question_asw1" class="options" placeholder="보기 :")
+            li
+                input(type = "text" name = "r_question_asw2" class="options" placeholder="보기 :")
+            li
+                input(type = "text" name = "r_question_asw3" class="options" placeholder="보기 :")
+            li
+                input(type = "text" name = "r_question_asw4" class="options" placeholder="보기 :")
+            li
+                input(type = "text" name = "r_question_asw5" class="options" placeholder="보기 :")
+        div(id="middle_right")
+          div(id="checkbox") 정답 :
+            |1번
+            input(type="radio" name="asws" value=1 class="box" id ="check1" onMouseDown="this.__chk = this.checked" onClick="if (this.__chk) this.checked = false")
+            |2번
+            input(type="radio" name="asws" value=2 class="box" id ="check2" onMouseDown="this.__chk = this.checked" onClick="if (this.__chk) this.checked = false")
+            |3번
+            input(type="radio" name="asws" value=3 class="box" id ="check3" onMouseDown="this.__chk = this.checked" onClick="if (this.__chk) this.checked = false")
+            |4번
+            input(type="radio" name="asws" value=4 class="box" id ="check4" onMouseDown="this.__chk = this.checked" onClick="if (this.__chk) this.checked = false")
+            |5번
+            input(type="radio" name="asws" value=5 class="box" id ="check5" onMouseDown="this.__chk = this.checked" onClick="if (this.__chk) this.checked = false")
+          textarea(name = "r_question_trans" id="trans" placeholder="해석 :")
+          textarea(name = "r_question_explain" id="explain" placeholder="설명 :")
+    script.
+      $("#sortable").sortable({
+        stop: function(event, ui){
+            var cnt = 1;
+            $(this).children('li').each(function(){
+                $(this).children('input:first').attr('name', "r_question_asw"+cnt+"");
+                cnt++;
+                });
+            }
+      });
+      var t= document.getElementById('target');
+      t.addEventListener('submit', function(){
+      checkProtype();
+      checkPro();
+      checkText();
+      checkOption();
+      checkAnswer();
+      })
+  
+        function checkProtype(e){
+          var type = document.getElementById('opt');
+          for(var i=0; i< opt.length; i++){
+            if(opt[i].selected){
+              return;
+              }
+            }
+            alert('문제유형을 선택해주세요');
+            event.preventDefault();
+          
+        } 
+         
+        function checkPro(e){
+          if(document.getElementById('problem').value.length === 0){
+          alert('문제를 입력해주십시오');
+          event.preventDefault();
+            }
+        }
+        
+        function checkText(e){
+          if(document.getElementById('text').value.length === 0){
+            alert('본문을 입력해주세요')
+            event.preventDefault();
+
+          }
+        }
+        
+        function checkOption(e){
+           var aswers = document.getElementsByClassName('options');
+           for(var i=0; i< aswers.length; i++){
+             if(aswers[i].value.length === 0){
+               alert('보기를 작성해주십시오');
+               event.preventDefault();
+               return;
+               }
+             }
+        }
+        
+        function checkAnswer(e){
+          var boxs = document.getElementsByClassName('box');
+          for(var i=0; i< boxs.length; i++){
+            if(boxs[i].checked == true){
+                return;
+              }
+              }
+              alert('정답을 입력해주세요');
+              event.preventDefault();
+        }
+        
+      
