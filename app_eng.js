@@ -490,6 +490,7 @@ app.get(['/reading','/reading/:id'], function(req,res){
           res.status(500).send('Internal Server Error');
         }else{
           res.render('reading',{r_questiontypes:r_questiontypes, r_questions:r_questions});
+          res.send('관리')
 
         }
       })
