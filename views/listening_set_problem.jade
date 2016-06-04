@@ -46,7 +46,7 @@ html
         br
         br
         button(class="btn btn-default" id="setEdit" data-id = l_questionset.l_questionset_id) 문제집 수정  
-        button(class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" data-parent="#searchAccordion") 문제 추가
+        button(class="btn btn-primary" data-toggle="collapse" data-target="#collapseOne" data-parent="#searchAccordion" id='addProblem') 문제 추가
         a(href="/listening/set") 
           button(class="btn btn-success" id="goingSet") submit
         
@@ -243,6 +243,14 @@ html
               
             }(i))
           }
+          console.log($(location).attr('href'));
+          if($(location).attr('href') == "http://localhost:2000/listening/set/new"){
+            $('#addProblem').remove();
+            $( "#collapseOne" ).removeClass( "collapse" )
+
+            
+          };
+          
         });  
         $("#setEdit").click(function(e){
           var proId = $(this).data('id');
@@ -261,6 +269,8 @@ html
           }
         });
         })
+        
+      
         
         //updating problem using ajax
         $('.formtags').each(function () {
