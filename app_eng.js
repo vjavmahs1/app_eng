@@ -501,6 +501,6 @@ app.get(['/reading','/reading/:id'], function(req,res){
 });
 
 
-app.listen(2000, function(){
-  console.log('Connected, 2000 port!');
+app.listen(8080, function(){
+  console.log('Connected, 8080 port!');
 })
